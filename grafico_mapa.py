@@ -14,7 +14,7 @@ def crear_grafico(df):
     }).reset_index()
 
     # Agrupamos df por 'ciudad' y sumando 'valor_total'
-    df_grouped = df.groupby('ciudad').agg({
+    df_grouped = df.groupby(['ciudad','state_name']).agg({
         'valor_total':'sum'
     }).reset_index()
 
@@ -29,7 +29,7 @@ def crear_grafico(df):
                                scope = 'south america',
                                template = 'seaborn',
                                size = 'valor_total',
-                               hover_name = 'ciudad',
+                               hover_name = 'state_name',
                                hover_data = {'latitude':False, 'longitude':False, 'Ingresos': True, 'valor_total':False},
                                title = 'Ventas por Ciudades')
     
