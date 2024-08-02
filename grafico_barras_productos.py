@@ -7,11 +7,14 @@ def crear_grafico(df):
         monto_total_productos = ('valor_total','sum')
     ).sort_values(by='monto_total_productos', ascending=False).reset_index()
 
+    # Formatear valores en dólares
+    revenue_productos['ventas'] = revenue_productos['monto_total_productos'].apply(lambda x: f'${x:,.0f}')
+
     fig = px.bar(revenue_productos.head(3),
                  x = 'tipo_producto',
                  y = 'monto_total_productos',
-                 text = 'monto_total_productos'#,
-                 #title = 'Top 3 Productos por ventas ($)'
+                 text = 'monto_total_productos',
+                 hover_data = {'monto_total_productos':False, 'ventas':True}
                  )
     
     fig.update_layout(yaxis_title='Ventas ($)', xaxis_title='Producto', showlegend=False)
