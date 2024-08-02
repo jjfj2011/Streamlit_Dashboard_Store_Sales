@@ -156,4 +156,8 @@ def filtro_detalle():
     ###############################################################################################################################################################
 
     st.plotly_chart(graf_lineas, use_container_width=True)
-    st.dataframe(df_pivot, use_container_width=True)
+    col1, col2, col3 = st.columns([0.2, 1, 0.2])
+    #with col1:
+    with col2:
+        st.dataframe(df_pivot, use_container_width=True)
+    #with col3:
