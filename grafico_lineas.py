@@ -3,6 +3,9 @@ import plotly.express as px
 
 def crear_grafico(df):
 
+    # Convertir fecha_compra a datetime si no lo está
+    df['fecha_compra'] = pd.to_datetime(df['fecha_compra'])
+
     revenues_monthly = df.set_index('fecha_compra').groupby(pd.Grouper(freq='ME'))['valor_total'].sum().reset_index()
     revenues_monthly['Year'] = revenues_monthly['fecha_compra'].dt.year
     revenues_monthly['Month'] = revenues_monthly['fecha_compra'].dt.month_name()
@@ -16,7 +19,7 @@ def crear_grafico(df):
 
     # Ordenar los datos usando el diccionario
     revenues_monthly['Month'] = pd.Categorical(revenues_monthly['Month'], categories=month_order.keys(), ordered=True)
-    revenues_monthly = revenues_monthly.sort_values(by=['Month'])
+    revenues_monthly = revenues_monthly.sort_values(by=['Year', 'Month'])
 
     # Obtener el orden único de los años
     year_order = sorted(revenues_monthly['Year'].unique())
@@ -30,7 +33,7 @@ def crear_grafico(df):
         color = 'Year',
         line_dash = 'Year',
         title = 'Ventas mensuales',
-        category_orders={'Year': year_order}  # Ordenar la leyenda por Year
+        category_orders={'Month': list(month_order.keys()), 'Year': year_order}  # Ordenar la leyenda por Year y Month
     )
     fig.update_layout(yaxis_title='Ventas ($)', xaxis_tickangle=90, template='plotly_dark')
 
